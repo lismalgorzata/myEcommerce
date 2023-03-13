@@ -1,4 +1,4 @@
-package plLisM;
+package pl.mlis;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,6 +27,7 @@ public class App {
                         .filter(name -> name.startsWith("K"))
                         .map(String::toUpperCase)
                         .forEach(greeter::greet);
+
 
     }
 }

@@ -1,4 +1,4 @@
-package plLisM;
+package pl.mlis;
 
 public class Main {
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package plLisM;
+package pl.mlis;
 
 public class Greeter {
     public void greet(String name) {
