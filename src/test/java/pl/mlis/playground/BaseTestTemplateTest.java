@@ -1,6 +1,6 @@
-package pl.mlis;
+package pl.mlis.playground;
 import org.junit.jupiter.api.Test;
-public class FirstTest {
+public class BaseTestTemplateTest {
     @Test
     void testIt() {
         assert true == true;
@@ -19,7 +19,5 @@ public class FirstTest {
         // Arrange   // Given   // Input
         // Act       // When    // Interaction
         // Assert    // Then    // Output
-
-
     }
 }
