@@ -3,8 +3,13 @@ package pl.mlis.productcatalog;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.*;
 
 public class ProductCatalog {
+
+    // Business
+    // Technical
     private ProductStorage productStorage;
 
     public ProductCatalog(ProductStorage productStorage) {
@@ -15,6 +20,9 @@ public class ProductCatalog {
         return productStorage.allProducts();
     }
 
+    public List<Product> allPublishedProductsMap() {
+        return productStorage.allProducts();
+    }
 
 //SELLER
     public String addProduct(String name, String desc, String image, Boolean isPublished, BigDecimal price, String color, int x, int y) {
@@ -48,24 +56,26 @@ public class ProductCatalog {
     }
 
     public void publishProduct(String productId) {
-        Product product = loadById(productId);
+        Product loaded = loadById(productId);
 
-        if (product.getImage() == null) {
+        if (loaded.getImage() == null) {
             throw new ProductCannotBePublishedException();
         }
 
-        if (product.getPrice() == null) {
+        if (loaded.getPrice() == null) {
             throw new ProductCannotBePublishedException();
         }
 
-        product.setOnline(true);
+        loaded.setOnline(true);
     }
 
     public List<Product> allPublishedProducts() {
+
         return productStorage.allPublishedProducts();
     }
 
     public Product loadById(String productId) {
+        //Optional.ofNullable(null)
         return productStorage.loadById(productId);
     }
 }

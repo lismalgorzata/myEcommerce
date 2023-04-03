@@ -10,7 +10,7 @@ public class Product {
     private String image;
     private Boolean isPublished;
     private BigDecimal price;
-    private Boolean online;
+    private Boolean isOnline;
     private final String color;
     private final int x;
     private final int y;
@@ -70,9 +70,9 @@ public class Product {
 
     public void setOnline(boolean online) {
 
-        this.online = online;
+        this.isOnline = online;
     }
     public boolean getOnline() {
-        return online;
+        return isOnline;
     }
 }

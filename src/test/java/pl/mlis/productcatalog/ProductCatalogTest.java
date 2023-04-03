@@ -37,7 +37,7 @@ public class ProductCatalogTest {
         String productId = catalog.addProduct("Saturn V", "rocket", "coolimage",false,  BigDecimal.valueOf(1), "white", 1, 1);
 
         Product loadedProduct = catalog.loadById(productId);
-        assert loadedProduct.getId().equals(productId);
+        assert loadedProduct.getId().equals(productId); //czy id produktu == id po stworzeniu
         assert loadedProduct.getName().equals("lego set 8080");
     }
 
@@ -100,7 +100,7 @@ public class ProductCatalogTest {
 
     private ProductCatalog thereIsProductCatalog() {
         return new ProductCatalog(
-                new DbProductStorage()
+                new HashMapProductStorage()
         );
     }
 
