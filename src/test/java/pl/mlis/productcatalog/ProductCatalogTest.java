@@ -23,8 +23,7 @@ public class ProductCatalogTest {
         //Arrange
         ProductCatalog catalog = thereIsProductCatalog();
         //Act
-        String productId = catalog.addProduct("Saturn V", "rocket", "coolimage",false,  BigDecimal.valueOf(1), "white", 1, 1);
-
+        String productId = catalog.addProduct("Saturn V", "rocket");
         //Assert
         List<Product> products = catalog.allProducts();
         assert 1 == products.size();
@@ -34,17 +33,17 @@ public class ProductCatalogTest {
     void itAllowsToLoadProductDetails() {
         ProductCatalog catalog = thereIsProductCatalog();
 
-        String productId = catalog.addProduct("Saturn V", "rocket", "coolimage",false,  BigDecimal.valueOf(1), "white", 1, 1);
+        String productId = catalog.addProduct("Saturn V", "rocket");
 
         Product loadedProduct = catalog.loadById(productId);
         assert loadedProduct.getId().equals(productId); //czy id produktu == id po stworzeniu
-        assert loadedProduct.getName().equals("lego set 8080");
+        assert loadedProduct.getName().equals("Saturn V");
     }
 
     @Test
     void itAllowsToChangePrice() {
         ProductCatalog catalog = thereIsProductCatalog();
-        String productId = catalog.addProduct("Saturn V", "rocket", "coolimage",false,  BigDecimal.valueOf(1), "white", 1, 1);
+        String productId = catalog.addProduct("Saturn V", "rocket");
 
         catalog.changePrice(productId, BigDecimal.valueOf(20.20));
 
@@ -55,7 +54,7 @@ public class ProductCatalogTest {
     @Test
     void itAllowsToAssignImage() {
         ProductCatalog catalog = thereIsProductCatalog();
-        String productId = catalog.addProduct("Saturn V", "rocket", "coolimage",false,  BigDecimal.valueOf(1), "white", 1, 1);
+        String productId = catalog.addProduct("Saturn V", "rocket");
 
         catalog.assignImage(productId, "foo/boo/nice_image.jpeg");
 
@@ -66,7 +65,7 @@ public class ProductCatalogTest {
     @Test
     void itAllowsToPublishProduct() {
         ProductCatalog catalog = thereIsProductCatalog();
-        String productId = catalog.addProduct("Saturn V", "rocket", "coolimage",false,  BigDecimal.valueOf(1), "white", 1, 1);
+        String productId = catalog.addProduct("Saturn V", "rocket");
 
         catalog.changePrice(productId, BigDecimal.valueOf(10));
         catalog.assignImage(productId, "nice.jpeg");
@@ -81,7 +80,7 @@ public class ProductCatalogTest {
     @Test
     void draftProductsAreNotListedForBeingSold() {
         ProductCatalog catalog = thereIsProductCatalog();
-        String productId = catalog.addProduct("Saturn V", "rocket", "coolimage",false,  BigDecimal.valueOf(1), "white", 1, 1);
+        String productId = catalog.addProduct("Saturn V", "rocket");
 
         List<Product> publishedProducts = catalog.allPublishedProducts();
         assertEquals(0, publishedProducts.size());
@@ -90,7 +89,7 @@ public class ProductCatalogTest {
     @Test
     void publicationIsPossibleWhenPriceAndImageAreDefined() {
         ProductCatalog catalog = thereIsProductCatalog();
-        String productId = catalog.addProduct("Saturn V", "rocket", "coolimage",false,  BigDecimal.valueOf(1), "white", 1, 1);
+        String productId = catalog.addProduct("Saturn V", "rocket");
 
         assertThrows(
                 ProductCannotBePublishedException.class,

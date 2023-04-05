@@ -8,23 +8,13 @@ public class Product {
     private final String name;
     private final String desc;
     private String image;
-    private Boolean isPublished;
     private BigDecimal price;
-    private Boolean isOnline;
-    private final String color;
-    private final int x;
-    private final int y;
+    private boolean online;
 
-    public Product(UUID uuid, String name, String desc, String image, Boolean isPublished, BigDecimal price, String color, int x, int y) {
+    public Product(UUID uuid, String name, String desc) {
         this.uuid = uuid.toString();
         this.name = name;
         this.desc = desc;
-        this.image = image;
-        this.isPublished = isPublished;
-        this.price = price;
-        this.color = color;
-        this.x = x;
-        this.y = y;
     }
 
     public String getId() {
@@ -58,21 +48,12 @@ public class Product {
         this.image = image;
     }
 
-    public Boolean getIsPublished() {
-        return isPublished;
-    }
-    public void setIsPublished(Boolean isPublished){
-        if (this.image == null || this.price == null){
-            throw new ProductCannotBePublishedException();
-        }
-        this.isPublished = isPublished;
-    }
 
     public void setOnline(boolean online) {
-
-        this.isOnline = online;
+        this.online = online;
     }
+
     public boolean getOnline() {
-        return isOnline;
+        return online;
     }
 }

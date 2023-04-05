@@ -3,8 +3,6 @@ package pl.mlis.productcatalog;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.*;
 
 public class ProductCatalog {
 
@@ -20,22 +18,13 @@ public class ProductCatalog {
         return productStorage.allProducts();
     }
 
-    public List<Product> allPublishedProductsMap() {
-        return productStorage.allProducts();
-    }
 
 //SELLER
-    public String addProduct(String name, String desc, String image, Boolean isPublished, BigDecimal price, String color, int x, int y) {
+    public String addProduct(String name, String desc) {
         Product newProduct = new Product(
                 UUID.randomUUID(),
                 name,
-                desc,
-                image,
-                isPublished,
-                price,
-                color,
-                x,
-                y
+                desc
         );
 
         productStorage.add(newProduct);
@@ -70,7 +59,6 @@ public class ProductCatalog {
     }
 
     public List<Product> allPublishedProducts() {
-
         return productStorage.allPublishedProducts();
     }
 
