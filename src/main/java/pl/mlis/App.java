@@ -6,13 +6,13 @@ import org.springframework.context.annotation.Bean;
 import pl.mlis.productcatalog.HashMapProductStorage;
 import pl.mlis.productcatalog.ProductCatalog;
 
-@SpringBootApplication
+@SpringBootApplication //main uruchamiający aplikacje
 public class App {
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
     }
 
-    @Bean
+    @Bean //identyfikacja nasza customowa klase, ktora bedziemy wykorzystywac pozniej
     ProductCatalog createProductCatalog() {
          ProductCatalog productCatalog = new ProductCatalog(new HashMapProductStorage());
          return productCatalog;
