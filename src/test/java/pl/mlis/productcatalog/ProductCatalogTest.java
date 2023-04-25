@@ -1,6 +1,8 @@
 package pl.mlis.productcatalog;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.context.annotation.Bean;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;

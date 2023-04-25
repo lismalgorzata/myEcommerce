@@ -29,6 +29,8 @@ public class Product {
         return name;
     }
 
+    public String getDesc() { return desc; }
+
     //ERP
     public BigDecimal getPrice() {
         return price;
@@ -56,4 +58,6 @@ public class Product {
     public boolean getOnline() {
         return online;
     }
+
+
 }
