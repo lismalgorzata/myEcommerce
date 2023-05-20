@@ -12,26 +12,22 @@ import org.springframework.http.ResponseEntity;
 public class ProductCatalogHTTPTest {
     @LocalServerPort
     int port;
-    //inicjalizacja konstruktora resttemplata // konstrukor,setter,reflekscja <- przekazywanie zmiennych z zewnątrz
     @Autowired
     TestRestTemplate http;
 
     @Test
-    void itLoadsIndex() {
-        var url = String.format("http://localhost:%s", port);
-        //o co chce zapytac? ENTITY- WSZYSTKO ;;; OBJECT- NAGLOWEK
-        ResponseEntity<String> response = http.getForEntity(url, String.class);//CTRL+NAJAZD- CO ZWRACA
-
-        assert response.getStatusCode().equals(HttpStatus.OK); //OK WIEC GIT????????
-
-    }
-
-    @Test
-    void itLoadsProducts() {
-        var url = String.format("http://localhost:%s", port);
+    void itLoadsIndex(){
+        String url= String.format("http://localhost:%s", port);
         ResponseEntity<String> response = http.getForEntity(url, String.class);
 
         assert response.getStatusCode().equals(HttpStatus.OK);
+    }
 
+    @Test
+    void itLoadsProducts(){
+        var url = String.format("http://localhost:%s/api/products", port);
+        ResponseEntity<String> response = http.getForEntity(url,String.class);
+
+        assert response.getStatusCode().equals(HttpStatus.OK);
     }
 }
