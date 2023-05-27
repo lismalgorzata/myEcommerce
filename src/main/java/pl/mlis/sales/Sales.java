@@ -1,6 +1,7 @@
 package pl.mlis.sales;
 
 import java.util.Optional;
+
 public class Sales {
     private CartStorage cartStorage;
     private ProductDetailsProvider productDetailsProvider;
@@ -12,7 +13,7 @@ public class Sales {
         Cart customersCart = loadForCustomer(customerId)
                 .orElse(Cart.empty());
 
-        ProductDetails product = getProductDetails(productId)
+        ProductDetailsProvider product = getProductDetails(productId)
                 .orElseThrow(() -> new NoSuchProductException());
 
         customersCart.add(product);
@@ -20,7 +21,7 @@ public class Sales {
         cartStorage.save(customerId,customersCart);
     }
 
-    private Optional<ProductDetails> getProductDetails(String productId) {
+    private Optional<ProductDetailsProvider> getProductDetails(String productId) {
         return productDetailsProvider.loadCartForProduct(productId);
     }
 
