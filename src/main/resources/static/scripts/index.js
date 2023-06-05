@@ -1,73 +1,88 @@
 const getProducts = () => {
     return fetch("/api/products")
-        .then(response => response.json())
-}
-
-const addToCart = (productId) => {
-    return fetch(`/api/add-to-cart/${productId}`, {
-        method: "POST",
-        body: JSON.stringify({})
-    }).then(response => response.json());
-}
-
-const createHtmlElementFromString = (template) => {
-    let tmpElement = document.createElement('div');
-    tmpElement.innerHTML = template.trim();
-    return tmpElement.firstChild;
-}
-
-const createProductComponent = (product) =>{
-    const template = `
-    <li class="product">
-        <span>${product.name}</span>
-        <div>
-            <span>${product.price}</span>
-        </div>
-        <button 
-            class="product__add-to-cart"
-            data-product-id="${product.id}"
-            onclick="addToCart(${product.id})"
-        >Add to cart</button>
-    </li>
-    `;
-
-    return createHtmlElementFromString(template);
-}
+        .then((response) => response.json())
+        .catch((error) => console.log(error))
+};
 
 const getCurrentOffer = () => {
-    return fetch("/api/get-current-offer")
-        .then(response => response.json());
+    return fetch("/api/current-offer")
+        .then((response) => response.json())
 }
 
-const refreshCurrentOffer = () => {
-    console.log('i am going to refresh an offer');
-    const offerElement = document.querySelector('.cart');
+const handleAddToCart = (productId) => {
+    return fetch(`/api/cart/${productId}`, {
+        method: 'POST'
+    });
+};
 
-    getCurrentOffer()
-        .then(offer => {
-            offerElement.querySelector('.total').textContent = `${offer.total} PLN`;
-            offerElement.querySelector('.itemsCount').textContent = `${offer.itemsCount} items`;
-        });
+const refreshCurrentOffer = async () => {
+    const offer = await getCurrentOffer();
+    const offerEl = document.querySelector('.offer');
+
+    offerEl.querySelector('.total').textContent = `${offer.total} PLN`;
+    offerEl.querySelector('.itemsCount').textContent = `${offer.productsCount} items`;
+
+}
+
+const createHtmlElFromString = (template) => {
+    let parent = document.createElement("div");
+    parent.innerHTML = template.trim();
+
+    return parent.firstChild;
+}
+
+const createProductComponent = (product) => {
+    const template = `
+        <li class="product">
+            <span class="product__description">${product.name}</span>
+            <div class="product__image-container">
+                <img class="product__image" src="${product.picture}"/>
+            </div>
+            <span class="product__price">${product.price}</span>
+            <button
+                class="product__add-to-cart"
+                data-product-id="${product.id}"
+            >
+                Add to cart
+            </button>
+        </li>
+    `;
+
+    return createHtmlElFromString(template);
 }
 
 const initializeAddToCartHandler = (el) => {
-    const btn = el.querySelector('button.product__add-to-cart');
-    btn.addEventListener('click', () => {
-        addToCart(btn.getAttribute('data-product-id'))
-            .then(refreshCurrentOffer())
+    el.addEventListener('click', (e) => {
+        let button = e.target;
+        const productId = button.getAttribute('data-product-id');
+
+        handleAddToCart(productId)
+            .then(() => refreshCurrentOffer())
+            .catch((error) => console.log(error))
+        ;
     });
+
     return el;
 }
 
 
-(async () => {
-    console.log("It works :)");
+const initializeEcommerce = async () => {
+    await refreshCurrentOffer();
+
     const productsList = document.querySelector('#productsList');
-    refreshCurrentOffer();
     const products = await getProducts();
     products
         .map(p => createProductComponent(p))
-        .map(el => initializeAddToCartHandler(el))
-        .forEach(el => productsList.appendChild(el));
-    console.log("post get products");
+        .map(productEl => initializeAddToCartHandler(productEl))
+        .forEach(productEl => {
+            productsList.appendChild(productEl)
+        });
+
+}
+
+
+(() => {
+    console.log("My rocket store works");
+    initializeEcommerce()
+        .then(r => {});
 })();
