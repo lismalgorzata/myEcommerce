@@ -1,5 +1,6 @@
 package pl.mlis.sales;
 
+import javax.swing.plaf.synth.SynthLookAndFeel;
 import java.util.Optional;
 
 public class Sales {
@@ -9,27 +10,34 @@ public class Sales {
         this.cartStorage=cartStorage;
         this.productDetailsProvider=productDetailsProvider;
     }
+
     public void addToCart(String customerId, String productId) {
-        Cart customersCart = loadForCustomer(customerId)
+        Cart customerCart = loadCartForCustomer(customerId)
                 .orElse(Cart.empty());
 
-        ProductDetailsProvider product = getProductDetails(productId)
+        ProductDetails product = loadProductDetails(productId)
                 .orElseThrow(() -> new NoSuchProductException());
 
-        customersCart.add(product);
+        customerCart.add(product);
 
-        cartStorage.save(customerId,customersCart);
+        cartStorage.save(customerId, customerCart);
     }
 
-    private Optional<ProductDetailsProvider> getProductDetails(String productId) {
-        return productDetailsProvider.loadCartForProduct(productId);
+    private Optional<ProductDetails> loadProductDetails(String productId) {
+        return productDetailsProvider.loadForProduct(productId);
     }
 
-    private Optional<Cart> loadForCustomer(String customerId) {
+    private Optional<Cart> loadCartForCustomer(String customerId) {
         return cartStorage.load(customerId);
     }
 
     public Offer getCurrentOffer(String customer) {
         return new Offer();
     }
+    /*public PaymentData acceptOffer(String customerId) {
+        Offer offer = getCurrentOffer(customerId);
+
+        Reservation reservation;
+        return
+    }*/
 }

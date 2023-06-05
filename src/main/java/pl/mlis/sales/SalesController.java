@@ -16,10 +16,11 @@ public class SalesController {
     }
     @PostMapping("api/add-to-cart/{productId}")
     public void addToCart(@PathVariable String productId) {
+
         sales.addToCart(getCurrentCustomer(), productId);
     }
 
     private String getCurrentCustomer() {
-        return "ami";
+        return "gocha";
     }
 }

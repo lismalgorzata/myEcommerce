@@ -4,12 +4,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import pl.mlis.productcatalog.HashMapProductStorage;
-import pl.mlis.productcatalog.ProductCatalog;
-import pl.mlis.sales.CartStorage;
+import pl.mlis.sales.ProductCatalogDetailsProvider;
 import pl.mlis.sales.ProductDetailsProvider;
-import pl.mlis.sales.Sales;
+import pl.mlis.productcatalog.ProductCatalog;
+import pl.mlis.sales.*;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @SpringBootApplication //main uruchamiający aplikacje
 public class App {
@@ -21,12 +22,12 @@ public class App {
     ProductCatalog createProductCatalog() {
         ProductCatalog productCatalog =  new ProductCatalog(new HashMapProductStorage());
         String product1 = productCatalog.addProduct("rakieta", "nice catto");
-        productCatalog.assignImage(product1, "images/ebook.jpeg");
+        productCatalog.assignImage(product1, "images/rakieta.jpeg");
         productCatalog.changePrice(product1, BigDecimal.valueOf(20.20));
         productCatalog.publishProduct(product1);
 
         String product2 = productCatalog.addProduct("kolejna rakieta", "super nice catto");
-        productCatalog.assignImage(product2, "images/ebook2.jpeg");
+        productCatalog.assignImage(product2, "images/rakieta2.jpeg");
         productCatalog.changePrice(product2, BigDecimal.valueOf(22.22));
         productCatalog.publishProduct(product2);
 
@@ -41,7 +42,9 @@ public class App {
     }
 
     @Bean
-    Sales createSales() {
-        return new Sales(new CartStorage(), new ProductDetailsProvider());
+    Sales createSales(ProductCatalog catalog) {
+        return new Sales(
+                new CartStorage(),
+                new ProductCatalogDetailsProvider(catalog));
     }
 }
