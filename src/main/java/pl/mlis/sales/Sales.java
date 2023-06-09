@@ -1,6 +1,7 @@
 package pl.mlis.sales;
 
-import javax.swing.plaf.synth.SynthLookAndFeel;
+import pl.mlis.payu.Buyer;
+import java.math.BigDecimal;
 import java.util.Optional;
 
 public class Sales {
@@ -34,10 +35,17 @@ public class Sales {
     public Offer getCurrentOffer(String customer) {
         return new Offer();
     }
-    /*public PaymentData acceptOffer(String customerId) {
+    public PaymentData acceptOffer(String customerId) {
         Offer offer = getCurrentOffer(customerId);
 
-        Reservation reservation;
-        return
-    }*/
+        OrderCreateRequest orderCreateRequest = new OrderCreateRequest();
+        BigDecimal totalAmountAsGrosze = offer.getTotal().multiply(BigDecimal.valueOf(100));
+        orderCreateRequest.setBuyer(new Buyer()
+                .setFirstName(request.email)
+        );
+
+        return new PaymentData(response.getRedirectUri());
+    }
 }
+
+// addToBasket mamy wiec trzeba wyslac imie nazwisko email na inny endpoint

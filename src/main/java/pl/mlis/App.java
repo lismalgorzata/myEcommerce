@@ -5,12 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import pl.mlis.productcatalog.HashMapProductStorage;
 import pl.mlis.sales.ProductCatalogDetailsProvider;
-import pl.mlis.sales.ProductDetailsProvider;
 import pl.mlis.productcatalog.ProductCatalog;
 import pl.mlis.sales.*;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 @SpringBootApplication //main uruchamiający aplikacje
 public class App {
