@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import pl.mlis.productcatalog.Product;
 import pl.mlis.productcatalog.ProductCatalog;
+import pl.mlis.sales.payment.PaymentData;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

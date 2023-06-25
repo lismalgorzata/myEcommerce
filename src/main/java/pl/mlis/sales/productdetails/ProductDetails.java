@@ -1,4 +1,4 @@
-package pl.mlis.sales;
+package pl.mlis.sales.productdetails;
 
 import java.math.BigDecimal;
 

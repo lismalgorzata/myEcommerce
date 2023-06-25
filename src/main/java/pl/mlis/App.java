@@ -3,46 +3,76 @@ package pl.mlis;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
+import pl.mlis.payu.PayU;
+import pl.mlis.payu.PayUApiCredentials;
 import pl.mlis.productcatalog.HashMapProductStorage;
-import pl.mlis.sales.ProductCatalogDetailsProvider;
 import pl.mlis.productcatalog.ProductCatalog;
-import pl.mlis.sales.*;
+import pl.mlis.sales.Sales;
+import pl.mlis.sales.cart.CartStorage;
+import pl.mlis.sales.offering.OfferCalculator;
+import pl.mlis.sales.payment.PaymentGateway;
+import pl.mlis.sales.payment.PayuPaymentGateway;
+import pl.mlis.sales.productdetails.InMemoryProductDetailsProvider;
+import pl.mlis.sales.productdetails.ProductCatalogProductDetailsProvider;
+import pl.mlis.sales.productdetails.ProductDetailsProvider;
+import pl.mlis.sales.reservation.InMemoryReservationStorage;
+import pl.mlis.web.SessionCurrentCustomerContext;
 
+import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 
-@SpringBootApplication //main uruchamiający aplikacje
+@SpringBootApplication
 public class App {
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
     }
 
-    @Bean //identyfikacja naszej customowej klasy, ktora bedziemy wykorzystywac pozniej
-    ProductCatalog createProductCatalog() {
-        ProductCatalog productCatalog =  new ProductCatalog(new HashMapProductStorage());
-        String product1 = productCatalog.addProduct("rakieta", "nice catto");
-        productCatalog.assignImage(product1, "images/rakieta.jpeg");
-        productCatalog.changePrice(product1, BigDecimal.valueOf(20.20));
-        productCatalog.publishProduct(product1);
+    @Bean
+    ProductCatalog createNewProductCatalog() {
+        ProductCatalog productCatalog = new ProductCatalog(new HashMapProductStorage());
 
-        String product2 = productCatalog.addProduct("kolejna rakieta", "super nice catto");
-        productCatalog.assignImage(product2, "images/rakieta2.jpeg");
-        productCatalog.changePrice(product2, BigDecimal.valueOf(22.22));
-        productCatalog.publishProduct(product2);
+        String productId1 = productCatalog.addProduct("Applying UML and Patterns", "Craig Larman");
+        productCatalog.assignImage(productId1, "/image/book_1.jpg");
+        productCatalog.changePrice(productId1, BigDecimal.TEN);
+        productCatalog.publishProduct(productId1);
+
+        String productId2 = productCatalog.addProduct("Clean Code", "Robert Martin");
+        productCatalog.assignImage(productId2, "/image/book_2.jpg");
+        productCatalog.changePrice(productId2, BigDecimal.valueOf(20.20));
+        productCatalog.publishProduct(productId2);
+
+        String productId3 = productCatalog.addProduct("Domain-Driven Design", "Eric Evans");
+        productCatalog.assignImage(productId3, "/image/book_3.jpg");
+        productCatalog.changePrice(productId3, BigDecimal.valueOf(30.30));
+        productCatalog.publishProduct(productId3);
 
         return productCatalog;
-
-        //await fetch("/api/products")
-        //response = await fetch("/api/products")
-        //await response.json()
-        //fetch("/api/products").then(r=>r.json())
-        //fetch("/api/products").then(r=>r.json()).then(data => console.log(data)
-        //curl localhost:8080/api/products
     }
 
     @Bean
-    Sales createSales(ProductCatalog catalog) {
+    PaymentGateway createPaymentGateway() {
+        return new PayuPaymentGateway(new PayU(PayUApiCredentials.sandbox(), new RestTemplate()));
+    }
+
+    @Bean
+    Sales createSales(ProductDetailsProvider productDetailsProvider, PaymentGateway paymentGateway) {
         return new Sales(
                 new CartStorage(),
-                new ProductCatalogDetailsProvider(catalog));
+                productDetailsProvider,
+                new OfferCalculator(productDetailsProvider),
+                paymentGateway,
+                new InMemoryReservationStorage()
+        );
+    }
+
+    @Bean
+    SessionCurrentCustomerContext currentCustomerContext(HttpSession httpSession) {
+        return new SessionCurrentCustomerContext(httpSession);
+    }
+
+    @Bean
+    ProductDetailsProvider createProductDetailsProvider(ProductCatalog catalog) {
+        return new ProductCatalogProductDetailsProvider(catalog);
     }
 }

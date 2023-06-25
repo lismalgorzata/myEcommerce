@@ -1,4 +1,6 @@
-package pl.mlis.sales;
+package pl.mlis.sales.cart;
+
+import pl.mlis.sales.cart.Cart;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,13 +1,13 @@
-package pl.mlis.sales;
+package pl.mlis.sales.productdetails;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class AlwaysMissingProductDetailsProvider implements ProductDetailsProvider {
+public class InMemoryProductDetailsProvider implements ProductDetailsProvider {
 
     List<ProductDetails> productDetails;
-    public AlwaysMissingProductDetailsProvider() {
+    public InMemoryProductDetailsProvider() {
         this.productDetails = new ArrayList<>();
     }
 
@@ -17,10 +17,5 @@ public class AlwaysMissingProductDetailsProvider implements ProductDetailsProvid
 
     public void add(ProductDetails details) {
         this.productDetails.add(details);
-    }
-
-    @Override
-    public Optional<ProductDetails> loadForProduct(String productId) {
-        return Optional.empty();
     }
 }
